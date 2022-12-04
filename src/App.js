@@ -23,27 +23,41 @@ function App() {
   const [home, setHome] = useState({})
   const [toggle, setToggle] = useState(false);
 
+  const [ratings, setRatings] = useState(0)
+  
+
   const loadBlockchainData = async () => {
+
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
     const network = await provider.getNetwork()
-
+    console.log(network)
     const realEstate = new ethers.Contract(config[network.chainId].realEstate.address, RealEstate, provider)
     const totalSupply = await realEstate.totalSupply()
+    
+   //
+
+
     const homes = []
 
     for (var i = 1; i <= totalSupply; i++) {
+      //Total supp
       const uri = await realEstate.tokenURI(i)
       const response = await fetch(uri)
       const metadata = await response.json()
       homes.push(metadata)
+      console.log(response.json())
     }
+
+    
 
     setHomes(homes)
 
     const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
+    
     setEscrow(escrow)
 
+    
     window.ethereum.on('accountsChanged', async () => {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const account = ethers.utils.getAddress(accounts[0])
@@ -51,9 +65,24 @@ function App() {
     })
   }
 
+  const getRating= async (nftId)=> {
+
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    setProvider(provider)
+    const network = await provider.getNetwork()
+    console.log(network)
+    const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
+    //accessing the mapping on frontend 
+    const rating= await escrow.getRating(nftId);
+    return rating
+
+   }
+
   useEffect(() => {
     loadBlockchainData()
   }, [])
+
 
   const togglePop = (home) => {
     setHome(home)
@@ -72,10 +101,16 @@ function App() {
         <hr />
 
         <div className='cards'>
-          {homes.map((home, index) => (
+
+          {
+            //working inside the div
+          homes.map((home, index) => (
             <div className='card' key={index} onClick={() => togglePop(home)}>
+
               <div className='card__image'>
+                
                 <img src={home.image} alt="Home" />
+              
               </div>
               <div className='card__info'>
                 <h4>{home.attributes[0].value} ETH</h4>
@@ -84,10 +119,14 @@ function App() {
                   <strong>{home.attributes[3].value}</strong> ba |
                   <strong>{home.attributes[4].value}</strong> sqft
                 </p>
+                <p><strong>Ratings </strong> {getRating(index)}</p>
                 <p>{home.address}</p>
               </div>
             </div>
-          ))}
+          ))
+          
+          
+          }
         </div>
 
       </div>

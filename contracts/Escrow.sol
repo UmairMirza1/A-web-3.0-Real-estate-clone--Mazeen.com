@@ -2,11 +2,7 @@
 pragma solidity ^0.8.0;
 
 interface IERC721 {
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _id
-    ) external;
+    function transferFrom(address _from, address _to, uint256 _id) external;
 }
 
 contract Escrow {
@@ -36,6 +32,8 @@ contract Escrow {
     mapping(uint256 => address) public buyer;
     mapping(uint256 => bool) public inspectionPassed;
     mapping(uint256 => mapping(address => bool)) public approval;
+    // mapping an nft id to rating
+    mapping(uint256 => uint256) public ratings;
 
     constructor(
         address _nftAddress,
@@ -49,6 +47,7 @@ contract Escrow {
         lender = _lender;
     }
 
+    // List basically works
     function list(
         uint256 _nftID,
         address _buyer,
@@ -64,16 +63,32 @@ contract Escrow {
         buyer[_nftID] = _buyer;
     }
 
+
+    // function to rate the NFTS
+    // Only the inspector can do that 
+    function rate(
+        uint256 _rating,
+        uint256 __nftID
+    ) public {
+        ratings[__nftID] = _rating;
+    }
+
+    //function to retrieve ratings
+//     function getRatings()  public returns(uint value) {
+//       return data_stores[userAddress];
+// }
+
+
     // Put Under Contract (only buyer - payable escrow)
     function depositEarnest(uint256 _nftID) public payable onlyBuyer(_nftID) {
         require(msg.value >= escrowAmount[_nftID]);
     }
 
     // Update Inspection Status (only inspector)
-    function updateInspectionStatus(uint256 _nftID, bool _passed)
-        public
-        onlyInspector
-    {
+    function updateInspectionStatus(
+        uint256 _nftID,
+        bool _passed
+    ) public onlyInspector {
         inspectionPassed[_nftID] = _passed;
     }
 
