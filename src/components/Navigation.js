@@ -18,7 +18,8 @@ const Navigation = ({ account, setAccount }) => {
 
             <div className='nav__brand'>
                 <img src={logo} alt="Logo" />
-                <h1>Millow</h1>
+                <h1>Zameen.com</h1>
+                <h2>Har pata humain bilkul nahi pata</h2>
             </div>
 
             {account ? (

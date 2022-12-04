@@ -28,6 +28,11 @@
         {
             "trait_type": "Year Built",
             "value": 2013
+        },
+        {
+            "trait_type": "Ratings",
+            "value": 4
         }
+        
     ]
 }
