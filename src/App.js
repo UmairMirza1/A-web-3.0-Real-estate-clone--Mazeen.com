@@ -23,7 +23,7 @@ function App() {
   const [home, setHome] = useState({})
   const [toggle, setToggle] = useState(false);
 
-  const [ratings, setRatings] = useState(0)
+  const [ratings, setRatings] = useState([])
   
 
   const loadBlockchainData = async () => {
@@ -36,8 +36,6 @@ function App() {
     const totalSupply = await realEstate.totalSupply()
     
    //
-
-
     const homes = []
 
     for (var i = 1; i <= totalSupply; i++) {
@@ -46,15 +44,12 @@ function App() {
       const response = await fetch(uri)
       const metadata = await response.json()
       homes.push(metadata)
-      console.log(response.json())
+      //console.log(metadata)
     }
 
-    
-
+  
     setHomes(homes)
-
     const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
-    
     setEscrow(escrow)
 
     
@@ -66,17 +61,20 @@ function App() {
   }
 
   const getRating= async (nftId)=> {
+    try {
 
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      setProvider(provider)
+      const network = await provider.getNetwork()
+      console.log(network)
+      const _escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
+      //accessing the mapping on frontend 
+      const rating= await _escrow.getRatings(nftId);
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(provider)
-    const network = await provider.getNetwork()
-    console.log(network)
-    const escrow = new ethers.Contract(config[network.chainId].escrow.address, Escrow, provider)
-    //accessing the mapping on frontend 
-    const rating= await escrow.getRating(nftId);
-    return rating
-
+      return rating.toNumber()
+    } catch (error) {
+      console.log(error)      
+    }    
    }
 
   useEffect(() => {
@@ -88,6 +86,21 @@ function App() {
     setHome(home)
     toggle ? setToggle(false) : setToggle(true);
   }
+
+  useEffect(() => {
+    var fetchedRatings = []
+    homes.map(async (home, index) =>  {
+      const rating = await getRating(index)
+      fetchedRatings.push(rating)
+    })
+    setRatings(fetchedRatings)
+  }, [homes])
+
+
+  useEffect(() => {
+    console.log("Ratings: ", ratings)
+    console.log(ratings.length)
+  }, [ratings])
 
   return (
     <div>
@@ -119,7 +132,12 @@ function App() {
                   <strong>{home.attributes[3].value}</strong> ba |
                   <strong>{home.attributes[4].value}</strong> sqft
                 </p>
-                <p><strong>Ratings </strong> {getRating(index)}</p>
+                <p><strong>Ratings: </strong>
+                {
+                  ratings[index] 
+                }
+                
+                 </p>
                 <p>{home.address}</p>
               </div>
             </div>

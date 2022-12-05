@@ -14,14 +14,13 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
   const [inspector, setInspector] = useState(null);
   const [seller, setSeller] = useState(null);
 
-  const [currentRating, setCurrentRating]= useState(0);
+  const [currentRating, setCurrentRating] = useState(0);
 
   const [owner, setOwner] = useState(null);
 
-  const setNftrating= async ( rating, nftID) =>{
-
-    escrow.rate(rating,nftID)
-  }
+  const setNftrating = (rating, nftID) => {
+    
+  };
 
   const fetchDetails = async () => {
     // -- Buyer
@@ -127,6 +126,17 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     setHasSold(true);
   };
 
+  const [_rating, _setRating] = useState('');
+
+  const handleChange = event => {
+    _setRating(event.target.value);
+
+    //escrow.rate(_rating, home.id);
+    console.log('value is:', event.target.value);
+  };
+
+
+
   useEffect(() => {
     fetchDetails();
     fetchOwner();
@@ -144,7 +154,6 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
             <strong>{home.attributes[2].value}</strong> bds |
             <strong>{home.attributes[3].value}</strong> ba |
             <strong>{home.attributes[4].value}</strong> sqft
-            <p>test</p>
           </p>
           {/* <p>here<strong>{home.attributes[7].value}</strong> ratings</p> */}
           <p>{home.address}</p>
@@ -161,23 +170,19 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
                 <>
                   <button
                     className="home__buy"
-                    onClick={inspectHandler}
+                    onClick={inspectHandler()}
                     disabled={hasInspected}
                   >
                     Approve Inspection
                   </button>
-                
-                    <label>Add rating</label>
-                    <input  onChange={(e) => setCurrentRating(e.target.value)}> </input>
-                    <button
-                    className="home__buy"
-                    onClick={setNftrating(currentRating,home.id)}
-                    
-                  >
-                    Save Rating
-                  </button>
-                    
-                
+                  <p> Rate this please</p>
+                  <input
+                    type="text"
+                    id="_rating"
+                    name="_rating"
+                    onChange={handleChange}
+                    value={_rating}
+                  />
                 </>
               ) : account === lender ? (
                 <button

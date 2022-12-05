@@ -74,9 +74,9 @@ contract Escrow {
     }
 
     //function to retrieve ratings
-//     function getRatings()  public returns(uint value) {
-//       return data_stores[userAddress];
-// }
+    function getRatings(uint256 nftId)  public view returns(uint256) {
+      return ratings[nftId];
+}
 
 
     // Put Under Contract (only buyer - payable escrow)
