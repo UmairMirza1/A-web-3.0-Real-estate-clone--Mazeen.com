@@ -18,9 +18,6 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
 
   const [owner, setOwner] = useState(null);
 
-  const setNftrating = (rating, nftID) => {
-    
-  };
 
   const fetchDetails = async () => {
     // -- Buyer
@@ -129,12 +126,14 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
   const [_rating, _setRating] = useState('');
 
   const handleChange = event => {
-    _setRating(event.target.value);
-
-    //escrow.rate(_rating, home.id);
+    _setRating(parseInt(event.target.value));
     console.log('value is:', event.target.value);
   };
 
+  const sendRatingtoBC = () =>{
+    //writing to bc 
+    escrow._setRating(_rating,home.id)
+  }
 
 
   useEffect(() => {
@@ -155,7 +154,6 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
             <strong>{home.attributes[3].value}</strong> ba |
             <strong>{home.attributes[4].value}</strong> sqft
           </p>
-          {/* <p>here<strong>{home.attributes[7].value}</strong> ratings</p> */}
           <p>{home.address}</p>
 
           <h2>{home.attributes[0].value} ETH</h2>
@@ -175,14 +173,22 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
                   >
                     Approve Inspection
                   </button>
-                  <p> Rate this please</p>
-                  <input
+                  <p> Rate this RealEstate</p>
+                  {/* <input
                     type="text"
                     id="_rating"
                     name="_rating"
                     onChange={handleChange}
                     value={_rating}
                   />
+                  <br></br>
+                  <button
+                  type="button"
+                  className="home__buy"
+                 onClick={sendRatingtoBC}
+                  > Rate
+    
+                  </button> */}
                 </>
               ) : account === lender ? (
                 <button

@@ -34,7 +34,7 @@ contract Escrow {
     mapping(uint256 => mapping(address => bool)) public approval;
     // mapping an nft id to rating
     mapping(uint256 => uint256) public ratings;
-
+    
     constructor(
         address _nftAddress,
         address payable _seller,
@@ -46,7 +46,7 @@ contract Escrow {
         inspector = _inspector;
         lender = _lender;
     }
-
+   
     // List basically works
     function list(
         uint256 _nftID,
@@ -76,7 +76,7 @@ contract Escrow {
     //function to retrieve ratings
     function getRatings(uint256 nftId)  public view returns(uint256) {
       return ratings[nftId];
-}
+    }
 
 
     // Put Under Contract (only buyer - payable escrow)
