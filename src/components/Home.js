@@ -61,6 +61,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
   };
 
   const buyHandler = async () => {
+    
     const escrowAmount = await escrow.escrowAmount(home.id);
     const signer = await provider.getSigner();
 
@@ -130,9 +131,13 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     console.log('value is:', event.target.value);
   };
 
-  const sendRatingtoBC = () =>{
+  const sendRatingtoBC = async () =>{
     //writing to bc 
-    escrow._setRating(_rating,home.id)
+    console.log(_rating, home.id);
+
+    const signer = await provider.getSigner();
+    var transaction = await escrow.connect(signer).rate(_rating, parseInt(home.id)-1);
+    transaction.wait();
   }
 
 
@@ -150,9 +155,9 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
         <div className="home__overview">
           <h1>{home.name}</h1>
           <p>
-            <strong>{home.attributes[2].value}</strong> bds |
-            <strong>{home.attributes[3].value}</strong> ba |
-            <strong>{home.attributes[4].value}</strong> sqft
+            <strong>{home.attributes[2].value}</strong> bedrooms |
+            <strong>{home.attributes[3].value}</strong> bathrooms |
+            <strong>{home.attributes[4].value}</strong> squareFt
           </p>
           <p>{home.address}</p>
 
@@ -164,17 +169,17 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
             </div>
           ) : (
             <div>
-              {account === inspector ? (
+              { account === inspector ? (
                 <>
                   <button
                     className="home__buy"
-                    onClick={inspectHandler()}
+                    onClick={inspectHandler}
                     disabled={hasInspected}
                   >
                     Approve Inspection
                   </button>
                   <p> Rate this RealEstate</p>
-                  {/* <input
+                  <input
                     type="text"
                     id="_rating"
                     name="_rating"
@@ -188,7 +193,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
                  onClick={sendRatingtoBC}
                   > Rate
     
-                  </button> */}
+                  </button>
                 </>
               ) : account === lender ? (
                 <button

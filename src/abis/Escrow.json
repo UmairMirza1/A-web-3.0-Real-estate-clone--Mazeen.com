@@ -140,14 +140,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "nftId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRatings",
+    "inputs": [],
+    "name": "getBalance",
     "outputs": [
       {
         "internalType": "uint256",
@@ -162,23 +156,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_rating",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "__nftID",
+        "name": "nftId",
         "type": "uint256"
       }
     ],
-    "name": "rate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getBalance",
+    "name": "getRatings",
     "outputs": [
       {
         "internalType": "uint256",
@@ -303,6 +285,43 @@
       }
     ],
     "name": "purchasePrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rating",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "__nftID",
+        "type": "uint256"
+      }
+    ],
+    "name": "rate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "ratings",
     "outputs": [
       {
         "internalType": "uint256",

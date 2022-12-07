@@ -35,7 +35,7 @@ const Navigation = ({ account, setAccount }) => {
                     className='nav__connect'
                     onClick={connectHandler}
                 >
-                    Connect
+                    Connect MetaMask
                 </button>
             )}
         </nav>
