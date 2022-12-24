@@ -1,4 +1,11 @@
-# Real Estate NFT D
+# Zameen.com - Har pata humain nai pata
+
+
+Project from Dapp university has been taken as template and further working has been done on it 
+
+
+
+# Steps to run 
 
 ### 2. Install Dependencies:
 `$ npm install`
